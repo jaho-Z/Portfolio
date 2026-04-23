@@ -1,17 +1,266 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
-    <title>Coursework - Zou Jiahao</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苏州大运河：阊门 - 时空穿越作品集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap');
+
+        :root {
+            --vintage-paper: #f4f1de;
+            --deep-blue: #2c3e50;
+            --ancient-red: #a0522d;
+        }
+
+        body {
+            background-color: var(--vintage-paper);
+            color: var(--deep-blue);
+            overflow-x: hidden;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        .art-title {
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+
+        /* 模拟封面视差效果 */
+        .hero-section {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                url('https://images.unsplash.com/photo-1599577078330-802c6521957c?auto=format&fit=crop&q=80&w=2000') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        /* 团队卡片悬停反馈 */
+        .team-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .team-image-container {
+            overflow: hidden;
+            height: 380px;
+            /* 统一高度 */
+        }
+
+        .team-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        .team-card:hover .team-image {
+            transform: scale(1.1);
+        }
+
+        .team-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        /* 时间轴节点 */
+        .timeline-node {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        /* 艺术字呼吸效果 */
+        @keyframes titleGlow {
+            0% {
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            }
+
+            50% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+
+            100% {
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .animate-glow {
+            animation: titleGlow 3s infinite;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>My Project</h1>
-    <p>GitHub Page Link: <a href="https://jaho-z.github.io/Portfolio/">https://jaho-z.github.io/Portfolio/</a></p>
 
-    <hr>
-    <p>Hello World</p>
+    <section class="hero-section">
+        <h1 class="text-7xl md:text-9xl art-title animate-glow mb-4">苏州大运河：阊门</h1>
+        <p class="text-xl md:text-2xl tracking-widest opacity-80">一朝入阊门，半部姑苏史</p>
+        <p class="text-lg md:text-xl mt-2 font-light opacity-60">—— 跨越千年的时空重构与叙事再生</p>
+        <div class="absolute bottom-10 animate-bounce text-white opacity-60">
+            <p>向下滚动开启旅程</p>
+            <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <section class="py-20 px-10 max-w-7xl mx-auto">
+        <h2 class="text-4xl art-title mb-16 text-center border-b-2 border-gray-300 pb-4">核心开发团队</h2>
+        <div id="team-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+        </div>
+    </section>
+
+    <section class="py-20 bg-[#e9e4d4] overflow-hidden">
+        <div class="max-w-7xl mx-auto px-10">
+            <h2 class="text-4xl art-title mb-20 text-center">开发历程：时空回廊</h2>
+            <div id="timeline-container"
+                class="relative border-l-4 border-dashed border-[#a0522d] ml-4 md:ml-0 md:flex md:border-l-0 md:border-t-4 md:justify-between">
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 bg-slate-900 text-white text-center">
+        <h2 class="text-3xl art-title mb-10">项目交付资产</h2>
+        <div class="flex justify-center gap-12">
+            <a href="#" class="group">
+                <div
+                    class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mb-2 group-hover:bg-red-800 transition-colors">
+                    📄</div>
+                <p>Poster</p>
+            </a>
+            <a href="#" class="group">
+                <div
+                    class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mb-2 group-hover:bg-red-800 transition-colors">
+                    💻</div>
+                <p>GitHub</p>
+            </a>
+            <a href="#" class="group">
+                <div
+                    class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mb-2 group-hover:bg-red-800 transition-colors">
+                    🎬</div>
+                <p>Video</p>
+            </a>
+        </div>
+        <p class="mt-20 opacity-30">© 2026 CPT208 Group Project - Suzhou Grand Canal</p>
+    </footer>
+
+    <script>
+        // --- 架构设计：数据与逻辑解耦 ---
+        const config = {
+            team: [
+                {
+                    name: "邹嘉豪",
+                    id: "2362505",
+                    role: "项目负责人 / Agent 开发",
+                    desc: "植根于 ICS，在视觉、语言与机器人的交汇处探索 AI 边界。致力于通过 AI Agent 让历史遗迹在数字世界中“活”起来。",
+                    img: "picture/Zou_Jiahao.jpg"
+                },
+                {
+                    name: "吴泽炜",
+                    id: "2360323",
+                    role: "交互逻辑 / 架构设计",
+                    desc: "专注于系统架构与交互逻辑，为时空穿越搭建稳健的底层框架，确保叙事体验的丝滑流畅。",
+                    img: "picture/W_Zewei.jpg"
+                },
+                {
+                    name: "刘思哲",
+                    id: "2363529",
+                    role: "文化调研 / 文本叙事",
+                    desc: "通过实地走访与文献分析提取阊门灵魂，为数字资产注入真实的叙事生命力。",
+                    img: "picture/Liu_Sizhe.jpg"
+                },
+                {
+                    name: "陈宇昂",
+                    id: "2360323",
+                    role: "视觉表现 / 资产整合",
+                    desc: "视觉美学的守护者，将苏州园林的雅致与现代艺术美学完美融合，设定项目的艺术基调。",
+                    img: "picture/Chen_Yuang.jpg"
+                }
+            ],
+            timeline: [
+                { date: "03/10", title: "小组成立", desc: "明确团队分工与初期项目愿景。" },
+                { date: "03/17", title: "周期规划", desc: "制定完整开发周期，确立各阶段里程碑和截至日期。" },
+                { date: "03/23", title: "问卷调查", desc: "完成问卷收集，获得 45+ 份有效用户反馈。" },
+                { date: "03/24", title: "核心访谈", desc: "完成对核心目标用户的深度访谈。" },
+                { date: "03/26", title: "需求分析", desc: "通过头脑风暴分析用户需求，最后评选出产品三个核心需求。" },
+                { date: "03/31", title: "DEMO 开发", desc: "完成针对核心需求的功能开发，形成初步的DEMO。" },
+                { date: "04/03", title: "导师指导", desc: "根据建议完善用户画像，优化产品设计方案。" },
+                { date: "04/08", title: "交互设计", desc: "绘制最终产品交互界面设计草图和各种交互的思维导图" },
+                { date: "04/10", title: "Portfolio搭建", desc: "完成作品集 Portfolio 的初步框架。" }
+            ]
+        };
+
+        // 动态渲染团队
+        const teamGrid = document.getElementById('team-grid');
+        config.team.forEach(m => {
+            teamGrid.innerHTML += `
+                <div class="team-card p-0">
+                    <div class="team-image-container">
+                        <img src="${m.img}" class="team-image" alt="${m.name}">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-xl mb-1 text-[#2c3e50]">${m.name}</h3>
+                        <p class="text-xs text-[#a0522d] font-bold mb-3">${m.role}</p>
+                        <p class="text-[11px] text-gray-500 leading-relaxed">${m.desc}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        // 动态渲染时间轴
+        const timelineCont = document.getElementById('timeline-container');
+        config.timeline.forEach((item, index) => {
+            timelineCont.innerHTML += `
+                <div class="timeline-node relative pl-10 md:pl-0 md:pt-10 mb-10 md:mb-0 md:w-1/4">
+                    <div class="absolute left-[-10px] md:left-auto md:top-[-10px] w-5 h-5 bg-[#a0522d] rounded-full z-10"></div>
+                    <div class="bg-white p-4 rounded shadow-sm hover:shadow-lg transition-shadow">
+                        <span class="text-xs font-bold text-[#a0522d]">${item.date}</span>
+                        <h4 class="font-bold my-1">${item.title}</h4>
+                        <p class="text-xs opacity-70">${item.desc}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        // --- 核心动画引擎 (GSAP) ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 入场动画：团队卡片
+        gsap.from(".team-card", {
+            scrollTrigger: {
+                trigger: "#team-grid",
+                start: "top 85%"
+            },
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power2.out"
+        });
+
+        // 滚动触发：时间轴节点渐次出现
+        gsap.to(".timeline-node", {
+            scrollTrigger: {
+                trigger: "#timeline-container",
+                start: "top 70%"
+            },
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            stagger: 0.3,
+            ease: "power2.out"
+        });
+
+    </script>
 </body>
 
 </html>
